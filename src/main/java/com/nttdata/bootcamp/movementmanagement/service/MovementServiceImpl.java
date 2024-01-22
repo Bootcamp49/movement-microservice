@@ -1,5 +1,7 @@
 package com.nttdata.bootcamp.movementmanagement.service;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +41,7 @@ public class MovementServiceImpl implements MovementService{
 
     @Override
     public Mono<Movement> createMovement(Movement movement) {
+        movement.setMovementdDate(LocalDate.now());
         return movementRepository.save(movement);
     }
 

@@ -19,43 +19,43 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @RestController
-@RequestMapping("movement")
+@RequestMapping("/movement")
 public class MovementController {
     @Autowired
-    private MovementService service;
+    private MovementService movementService;
     
     @GetMapping()
     public Flux<Movement> findMovements(){
-        return service.findMovements();
+        return movementService.findMovements();
     }
 
     @GetMapping("/{id}")
     public Mono<Movement> findById(@PathVariable String id) {
-        return service.findById(id);
+        return movementService.findById(id);
     }
     
     @GetMapping("/client/{clientId}")
     public Flux<Movement> findMovementsByClientId(@PathVariable String clientId){
-        return service.findByClientId(clientId);
+        return movementService.findByClientId(clientId);
     }
 
     @GetMapping("/product/{productId}")
     public Flux<Movement> findMovementsByProductId(@PathVariable String productId){
-        return service.findByProductId(productId);
+        return movementService.findByProductId(productId);
     }
 
     @PostMapping()
     public Mono<Movement> createMovement(@RequestBody Movement movement){
-        return service.createMovement(movement);
+        return movementService.createMovement(movement);
     }
 
     @PutMapping("/{id}")
     public Mono<Movement> updateMovement(@PathVariable String id, @RequestBody Movement movement){
-        return service.updateMovement(id, movement);
+        return movementService.updateMovement(id, movement);
     }
 
     @DeleteMapping("/{id}")
     public Mono<Void> deleteMovement(@PathVariable String id){
-        return service.deleteMovementt(id);
+        return movementService.deleteMovementt(id);
     }
 }
