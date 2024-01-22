@@ -14,6 +14,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+/*
+ * Clase de movimientos sobre los productos
+ */
 public class Movement {
     private String id;
     private String productId;
