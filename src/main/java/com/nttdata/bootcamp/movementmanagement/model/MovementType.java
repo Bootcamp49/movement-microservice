@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Clase para los tipos de movimiento.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

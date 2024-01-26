@@ -1,20 +1,21 @@
 package com.nttdata.bootcamp.movementmanagement.service;
 
-import java.time.LocalDate;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.nttdata.bootcamp.movementmanagement.model.Movement;
 import com.nttdata.bootcamp.movementmanagement.repository.MovementRepository;
-
+import java.time.LocalDate;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * Clase de implementación de la interfaz de Movimientos.
+ */
 @RequiredArgsConstructor
 @Service
-public class MovementServiceImpl implements MovementService{
+public class MovementServiceImpl implements MovementService {
 
     @Autowired
     private final MovementRepository movementRepository;
@@ -25,7 +26,7 @@ public class MovementServiceImpl implements MovementService{
     }
 
     @Override
-    public Mono<Movement> findById(String id) {
+    public Mono<Movement> findById(@NonNull String id) {
         return movementRepository.findById(id);
     }
 
@@ -46,7 +47,7 @@ public class MovementServiceImpl implements MovementService{
     }
 
     @Override
-    public Mono<Movement> updateMovement(String id, Movement movement) {
+    public Mono<Movement> updateMovement(@NonNull String id, Movement movement) {
         return movementRepository.findById(id)
         .flatMap(existingMovement -> {
             existingMovement.setMovementdDate(movement.getMovementdDate());
@@ -58,7 +59,7 @@ public class MovementServiceImpl implements MovementService{
     }
 
     @Override
-    public Mono<Void> deleteMovement(String id) {
+    public Mono<Void> deleteMovement(@NonNull String id) {
         return movementRepository.deleteById(id);
     }
     
