@@ -1,6 +1,6 @@
 package com.nttdata.bootcamp.movementmanagement.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,5 +22,6 @@ public class Movement {
     private String productId;
     private Double amountMoved;
     private MovementType type;
-    private LocalDate movementdDate;
+    private LocalDateTime movementDate;
+    private String clientId;
 }

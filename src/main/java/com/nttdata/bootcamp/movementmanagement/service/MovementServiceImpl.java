@@ -2,7 +2,7 @@ package com.nttdata.bootcamp.movementmanagement.service;
 
 import com.nttdata.bootcamp.movementmanagement.model.Movement;
 import com.nttdata.bootcamp.movementmanagement.repository.MovementRepository;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class MovementServiceImpl implements MovementService {
 
     @Override
     public Mono<Movement> createMovement(Movement movement) {
-        movement.setMovementdDate(LocalDate.now());
+        movement.setMovementDate(LocalDateTime.now());
         return movementRepository.save(movement);
     }
 
@@ -50,10 +50,11 @@ public class MovementServiceImpl implements MovementService {
     public Mono<Movement> updateMovement(@NonNull String id, Movement movement) {
         return movementRepository.findById(id)
         .flatMap(existingMovement -> {
-            existingMovement.setMovementdDate(movement.getMovementdDate());
+            existingMovement.setMovementDate(movement.getMovementDate());
             existingMovement.setAmountMoved(movement.getAmountMoved());
             existingMovement.setProductId(movement.getProductId());
             existingMovement.setType(movement.getType());
+            existingMovement.setClientId(movement.getClientId());
             return movementRepository.save(existingMovement);
         });
     }
