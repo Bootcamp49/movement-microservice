@@ -24,4 +24,6 @@ public class Movement {
     private MovementType type;
     private LocalDateTime movementDate;
     private String clientId;
+    private Boolean hasCommission;
+    private String productOriginId;
 }

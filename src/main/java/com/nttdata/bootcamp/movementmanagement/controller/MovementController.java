@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -96,5 +97,29 @@ public class MovementController {
     @DeleteMapping("/{id}")
     public Mono<Void> deleteMovement(@PathVariable String id) {
         return movementService.deleteMovement(id);
+    }
+
+    /**
+     * Método encargado de devolver los movimientos según el productId y el productType.
+     * @param productId Id del producto a buscar los movimientos
+     * @param productTypeId Id del tipo de producto para buscar movimientos.
+     * @return Retorna la lista de movimientos que concuerdan 
+     */
+    @GetMapping("/report/commission/{productId}")
+    public Flux<Movement> reportCommission(@PathVariable String productId, 
+        @RequestParam("productTypeId") Integer productTypeId) {
+        return movementService.reportCommission(productId, productTypeId);
+    }
+    
+    /**
+     * Método encargado de devolver los movimientos según el productId y el productType.
+     * @param productId Id del producto a buscar los movimientos
+     * @param productTypeId Id del tipo de producto para buscar movimientos.
+     * @return Retorna la lista de movimientos que concuerdan
+     */
+    @GetMapping("/report/commission/{productId}")
+    public Flux<Movement> reportMovements(@PathVariable String productId,
+        @RequestParam("productTypeId") Integer productTypeId) {
+        return movementService.reportMovements(productId, productTypeId);
     }
 }

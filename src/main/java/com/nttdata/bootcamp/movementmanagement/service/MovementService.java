@@ -57,4 +57,8 @@ public interface MovementService {
      * @return Retorna un Void sobre la eliminación del movimiento
      */
     Mono<Void> deleteMovement(String id);
+
+    Flux<Movement> reportCommission(String productId, Integer productTypeId);
+
+    Flux<Movement> reportMovements(String productId, Integer productTypeId);
 }
