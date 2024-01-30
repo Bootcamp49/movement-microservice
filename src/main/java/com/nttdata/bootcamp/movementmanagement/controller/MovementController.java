@@ -117,7 +117,7 @@ public class MovementController {
      * @param productTypeId Id del tipo de producto para buscar movimientos.
      * @return Retorna la lista de movimientos que concuerdan
      */
-    @GetMapping("/report/commission/{productId}")
+    @GetMapping("/report/{productId}")
     public Flux<Movement> reportMovements(@PathVariable String productId,
         @RequestParam("productTypeId") Integer productTypeId) {
         return movementService.reportMovements(productId, productTypeId);
