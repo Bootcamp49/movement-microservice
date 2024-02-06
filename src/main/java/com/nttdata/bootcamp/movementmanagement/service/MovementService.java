@@ -58,7 +58,27 @@ public interface MovementService {
      */
     Mono<Void> deleteMovement(String id);
 
+    /**
+     * Método para obtener el reporte de comisiones de un producto.
+     * @param productId Id del producto del cual sacar el reporte de comisiones.
+     * @param productTypeId Id del tipo de producto del cual se va a sacar el reporte.
+     * @return retornar los movimientos con comisiones del producto.
+     */
     Flux<Movement> reportCommission(String productId, Integer productTypeId);
 
+    /**
+     * Método para obtener el reporte movimientos del mes actual.
+     * @param productId Id del producto del cual obtener el reporte de movimientos.
+     * @param productTypeId Id del tipo de producto del cual se va a sacar el reporte.
+     * @return Retorna la lista de movimientos del mes actual del producto indicado.
+     */
     Flux<Movement> reportMovements(String productId, Integer productTypeId);
+
+    /**
+     * Método para obtener el reporte de los últimos 10 movimientos de la tarjeta.
+     * @param productsId Ids de los productos del cual obtener los movimientos
+     * @param productTypeId Id del tipo de producto de los cuales buscar los movimientos
+     * @return retorna los últimos 10 movimientos de los productos asociados a las tarjetas.
+     */
+    Flux<Movement> reportLastMovementsByCard(String productsId, Integer productTypeId);
 }

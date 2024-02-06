@@ -122,4 +122,16 @@ public class MovementController {
         @RequestParam("productTypeId") Integer productTypeId) {
         return movementService.reportMovements(productId, productTypeId);
     }
+
+    /**
+     * Método encargado de devolver los últimos 10 movimientos de una tarjeta por su productId.
+     * @param productsId Ids de los productos relacionados con la tarjeta
+     * @param productTypeId Tipo de los productos que se buscarán
+     * @return Retorna los últimos 10 movimientos de una tarjeta de crédito o debito.
+     */
+    @GetMapping("/report/card")
+    public Flux<Movement> reportLastMovementsByCard(@RequestParam String productsId, 
+        @RequestParam Integer productTypeId) {
+        return movementService.reportLastMovementsByCard(productsId, productTypeId);
+    }
 }

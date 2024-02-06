@@ -26,4 +26,5 @@ public class Movement {
     private String clientId;
     private Boolean hasCommission;
     private String productOriginId;
+    private Boolean isFromDebitCard;
 }

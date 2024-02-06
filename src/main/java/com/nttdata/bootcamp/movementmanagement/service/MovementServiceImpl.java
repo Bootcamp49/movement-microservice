@@ -5,6 +5,8 @@ import com.nttdata.bootcamp.movementmanagement.repository.MovementRepository;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +48,9 @@ public class MovementServiceImpl implements MovementService {
     @Override
     public Mono<Movement> createMovement(Movement movement) {
         movement.setMovementDate(LocalDateTime.now());
+        movement.setIsFromDebitCard(
+            movement.getIsFromDebitCard() == null ? false : movement.getIsFromDebitCard()
+        );
         return movementRepository.save(movement);
     }
 
@@ -101,6 +106,33 @@ public class MovementServiceImpl implements MovementService {
                 return movementTypeIds.contains(p.getType().getId()) 
                     && p.getMovementDate().getMonth() == currentMonth;
             });
+    }
+
+    @Override
+    public Flux<Movement> reportLastMovementsByCard(String productsId, Integer productTypeId) {
+        List<String> productsSeparated = Arrays.asList(productsId.split(","));
+        if (productsSeparated.size() <= 0) {
+            return null;
+        }
+        List<Integer> movementTypes = new ArrayList<>();
+        if (productTypeId == 1) {
+            movementTypes.add(1);
+            movementTypes.add(2);
+        } else {
+            movementTypes.add(3);
+            movementTypes.add(4);
+        }
+
+        Flux<Movement> movements = movementRepository.findAll().filter(
+            m -> {
+                return (productsSeparated.contains(m.getProductId())
+                    || productsSeparated.contains(m.getProductOriginId()))
+                    && (productTypeId == 1 ? m.getIsFromDebitCard() : true);
+            }
+        ).filter(m -> movementTypes.contains(m.getType().getId()))
+            .sort(Comparator.comparing(Movement::getMovementDate).reversed())
+            .take(10);
+        return movements;
     }
 
 }
