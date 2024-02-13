@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,26 +28,31 @@ public class MovementServiceImpl implements MovementService {
     private final MovementRepository movementRepository;
 
     @Override
+    @CircuitBreaker(name = "movement", fallbackMethod = "multipleMovementsFallback")
     public Flux<Movement> findMovements() {
         return movementRepository.findAll();
     }
 
     @Override
+    @CircuitBreaker(name = "movement", fallbackMethod = "singleMovementFallback")
     public Mono<Movement> findById(@NonNull String id) {
         return movementRepository.findById(id);
     }
 
     @Override
+    @CircuitBreaker(name = "movement", fallbackMethod = "multipleMovementsFallback")
     public Flux<Movement> findByClientId(String clientId) {
         return movementRepository.findByClientId(clientId);
     }
 
     @Override
+    @CircuitBreaker(name = "movement", fallbackMethod = "multipleMovementsFallback")
     public Flux<Movement> findByProductId(String productId) {
         return movementRepository.findByProductId(productId);
     }
 
     @Override
+    @CircuitBreaker(name = "movement", fallbackMethod = "singleMovementFallback")
     public Mono<Movement> createMovement(Movement movement) {
         movement.setMovementDate(LocalDateTime.now());
         movement.setIsFromDebitCard(
@@ -55,6 +62,7 @@ public class MovementServiceImpl implements MovementService {
     }
 
     @Override
+    @CircuitBreaker(name = "movement", fallbackMethod = "singleMovementFallback")
     public Mono<Movement> updateMovement(@NonNull String id, Movement movement) {
         return movementRepository.findById(id)
                 .flatMap(existingMovement -> {
@@ -73,6 +81,7 @@ public class MovementServiceImpl implements MovementService {
     }
 
     @Override
+    @CircuitBreaker(name = "movement", fallbackMethod = "multipleMovementsFallback")
     public Flux<Movement> reportCommission(String productId, Integer productTypeId) {
         List<Integer> movementTypeIds = new ArrayList<Integer>();
         if (productTypeId == 1) {
@@ -90,6 +99,7 @@ public class MovementServiceImpl implements MovementService {
     }
 
     @Override
+    @CircuitBreaker(name = "movement", fallbackMethod = "multipleMovementsFallback")
     public Flux<Movement> reportMovements(String productId, Integer productTypeId) {
         List<Integer> movementTypeIds = new ArrayList<Integer>();
         if (productTypeId == 1) {
@@ -109,6 +119,7 @@ public class MovementServiceImpl implements MovementService {
     }
 
     @Override
+    @CircuitBreaker(name = "movement", fallbackMethod = "multipleMovementsFallback")
     public Flux<Movement> reportLastMovementsByCard(String productsId, Integer productTypeId) {
         List<String> productsSeparated = Arrays.asList(productsId.split(","));
         if (productsSeparated.size() <= 0) {
@@ -135,4 +146,12 @@ public class MovementServiceImpl implements MovementService {
         return movements;
     }
 
+    private Mono<Movement> singleMovementFallback(Throwable throwable){
+        Movement movementToReturn = new Movement();
+        return Mono.just(movementToReturn);
+    }
+    private Flux<Movement> multipleMovementsFallback(Throwable throwable){
+        Movement movementToReturn = new Movement();
+        return Flux.just(movementToReturn);
+    }
 }
