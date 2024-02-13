@@ -16,10 +16,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Clase controlodaro para la administración de movimientos del sistema.
+ * Clase de controlador para la administración de movimientos del sistema.
  */
 @RestController
-@RequestMapping("/movement")
 public class MovementController {
     /**
      * Interface del servicio de movimientos.
