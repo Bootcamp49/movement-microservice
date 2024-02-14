@@ -56,7 +56,7 @@ public class MovementServiceImpl implements MovementService {
     public Mono<Movement> createMovement(Movement movement) {
         movement.setMovementDate(LocalDateTime.now());
         movement.setIsFromDebitCard(
-            movement.getIsFromDebitCard() == null ? false : movement.getIsFromDebitCard()
+            movement.getIsFromDebitCard() != null ? movement.getIsFromDebitCard(): false
         );
         return movementRepository.save(movement);
     }
@@ -66,11 +66,16 @@ public class MovementServiceImpl implements MovementService {
     public Mono<Movement> updateMovement(@NonNull String id, Movement movement) {
         return movementRepository.findById(id)
                 .flatMap(existingMovement -> {
-                    existingMovement.setMovementDate(movement.getMovementDate());
-                    existingMovement.setAmountMoved(movement.getAmountMoved());
-                    existingMovement.setProductId(movement.getProductId());
-                    existingMovement.setType(movement.getType());
-                    existingMovement.setClientId(movement.getClientId());
+                    existingMovement.setMovementDate( movement.getMovementDate() != null ?
+                            movement.getMovementDate() : existingMovement.getMovementDate());
+                    existingMovement.setAmountMoved( movement.getAmountMoved() != null ?
+                            movement.getAmountMoved() : existingMovement.getAmountMoved());
+                    existingMovement.setProductId(movement.getProductId() != null ?
+                            movement.getProductId() : existingMovement.getProductId());
+                    existingMovement.setType(movement.getType() != null ?
+                            movement.getType() : existingMovement.getType());
+                    existingMovement.setClientId(movement.getClientId() != null ?
+                            movement.getClientId() : existingMovement.getClientId());
                     return movementRepository.save(existingMovement);
                 });
     }
